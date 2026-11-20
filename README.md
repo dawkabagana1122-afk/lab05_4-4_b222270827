@@ -80,3 +80,20 @@ Newman-ийг `sudo npm install -g newman`-ээр суулгасан. Тестл
 - **Бие даасан байдал:** хавтас бүр өөрийн ID-тай оюутан, хичээлийг (`S3_STU`, `S3_CS313` г.м.) өөрийн `PUT` setup-аар үүсгэнэ. Ингэснээр нэг тестийн өгөгдөл нөгөөд нөлөөлөхгүй, ямар ч дарааллаар, хэд ч удаа ажиллуулж болно. «Байхгүй» ангиудад (S2, S4, S7, S8) хэзээ ч PUT хийгдээгүй ID ашигласан.
 - **Oracle-ууд:** POST бүрд статус кодын болон `result` утгын `pm.test` байгаа. S1/S9 дээр `registrationID`-ийн **яг утгыг биш, тоо эсэхийг** шалгана (сервер in-memory тул ID хуримтлагддаг). S5/S6 дээр `missing` массивыг нэмж шалгана. Setup PUT бүрд мөн `200` oracle бий.
 - Нийт **11 тест (хавтас), 24 хүсэлт, 39 assertion**.
+
+## Даалгавар 4: Newman-аар автоматжуулах
+
+Гурван ажиллуулалт. Exit code-ийг `| tee`-ийн дараа `${PIPESTATUS[0]}`-оор авсан (bash):
+
+```bash
+newman run lab05-collection.json 2>&1 | tee results/newman-pass.txt
+echo "exit=${PIPESTATUS[0]}"
+```
+
+| Ажиллуулалт | Collection | requests (executed / failed) | assertions (executed / failed) | Exit code |
+|---|---|---|---|---|
+| PASS | `lab05-collection.json` | 24 / 0 | **39 / 0** | **0** |
+| FAIL | `lab05-collection-fail.json` | 24 / 0 | 39 / **1** | **1** |
+
+- **PASS** (`results/newman-pass.txt`): 11 тест, 39 assertion бүгд амжилттай.
+- **FAIL** (`results/newman-fail.txt`): `lab05-collection-fail.json` бол үндсэн collection-ийн тусдаа хуулбар. Ганц өөрчлөлт нь S1-ийн статусын oracle-ыг `201`-ийн оронд `200` болгосон явдал: `expected response to have status code 200 but got 201`. Newman 1 assertion унахад exit code 1 буцаадаг. CI pipeline энэ кодыг харж build-ийг зогсооно (quality gate). Үндсэн `lab05-collection.json` зөв хэвээрээ.
