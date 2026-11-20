@@ -94,6 +94,10 @@ echo "exit=${PIPESTATUS[0]}"
 |---|---|---|---|---|
 | PASS | `lab05-collection.json` | 24 / 0 | **39 / 0** | **0** |
 | FAIL | `lab05-collection-fail.json` | 24 / 0 | 39 / **1** | **1** |
+| DOWN (сервер унтраасан) | `lab05-collection.json` | 24 / **24** | 39 / **39** | **1** |
 
 - **PASS** (`results/newman-pass.txt`): 11 тест, 39 assertion бүгд амжилттай.
 - **FAIL** (`results/newman-fail.txt`): `lab05-collection-fail.json` бол үндсэн collection-ийн тусдаа хуулбар. Ганц өөрчлөлт нь S1-ийн статусын oracle-ыг `201`-ийн оронд `200` болгосон явдал: `expected response to have status code 200 but got 201`. Newman 1 assertion унахад exit code 1 буцаадаг. CI pipeline энэ кодыг харж build-ийг зогсооно (quality gate). Үндсэн `lab05-collection.json` зөв хэвээрээ.
+- **DOWN** (`results/newman-down.txt`): серверийг унтраагаад үндсэн collection-ийг ажиллуулсан. Хүсэлт бүр `connect ECONNREFUSED 127.0.0.1:3000` алдаа өгсөн, 24 хүсэлт ба 39 assertion бүгд унасан, exit code **1**.
+
+**Интерфейсийн алдаа ба oracle-ийн алдааны ялгаа:** FAIL-д сервер хариу өгсөн боловч хариу нь бидний хүлээлттэй зөрсөн (oracle-ийн алдаа, функц эсвэл тестэд асуудал байна), харин DOWN-д хариу огт ирээгүй, учир нь сервертэй холбогдож чадаагүй (интерфейс/орчны алдаа, функцийн зөв бурууг энэ үед огт шалгаагүй).
