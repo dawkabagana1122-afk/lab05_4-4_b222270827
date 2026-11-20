@@ -1,0 +1,43 @@
+{
+  "info": {
+    "name": "Lab05 — Нийтийн API (jsonplaceholder)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "publicUrl",
+      "value": "https://jsonplaceholder.typicode.com"
+    }
+  ],
+  "item": [
+    {
+      "name": "GET /users — 200, массив, эхний хэрэглэгч Leanne Graham",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Хариу нь массив\", () => pm.expect(pm.response.json()).to.be.an(\"array\"));",
+              "pm.test(\"Эхний хэрэглэгчийн нэр Leanne Graham\", () => pm.expect(pm.response.json()[0].name).to.eql(\"Leanne Graham\"));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{publicUrl}}/users",
+          "host": [
+            "{{publicUrl}}"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      }
+    }
+  ]
+}
